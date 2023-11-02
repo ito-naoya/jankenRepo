@@ -20,10 +20,16 @@ public class JankenServlet extends HttpServlet {
 		// TODO Auto-generated constructor stub
 	}
 
+	//勝利メッセージ
 	private static String victoryMsg = "🎉🎉🎉🎉🎉あなたの勝ちです!!!🎉🎉🎉🎉🎉";
+
+	//負けメッセージ
 	private static String loseMsg = "😭あなたの負けです😭";
+
+	//引き分けメッセージ
 	private static String drawMsg = "😀😀😀あいこです😀😀😀";
 
+	//２人対戦時の対戦結果取得メソッド
 	private static String getResult(String myHand, String enemyHand) {
 		String result = "";
 		if (myHand.equals(enemyHand)) {
@@ -38,16 +44,17 @@ public class JankenServlet extends HttpServlet {
 		return result;
 	}
 
-	private static String getResult(String myHand, String firstEnemyHand, String secondEnemy2Hand) {
+	//３人対戦時の対戦結果取得メソッド
+	private static String getResult(String myHand, String firstEnemyHand, String secondEnemyHand) {
 		String result = "";
-		if (myHand.equals(firstEnemyHand) && myHand.equals(secondEnemy2Hand)
-				|| !myHand.equals(firstEnemyHand) && !firstEnemyHand.equals(secondEnemy2Hand)
-						&& !myHand.equals(secondEnemy2Hand)) {
+		if (myHand.equals(firstEnemyHand) && myHand.equals(secondEnemyHand)
+				|| !myHand.equals(firstEnemyHand) && !firstEnemyHand.equals(secondEnemyHand)
+						&& !myHand.equals(secondEnemyHand)) {
 			result = drawMsg;
-		} else if (myHand.equals("rock") && !firstEnemyHand.equals("paper") && !secondEnemy2Hand.equals("paper")
-				|| myHand.equals("scissors") && !firstEnemyHand.equals("rock") && !secondEnemy2Hand.equals("rock")
+		} else if (myHand.equals("rock") && !firstEnemyHand.equals("paper") && !secondEnemyHand.equals("paper")
+				|| myHand.equals("scissors") && !firstEnemyHand.equals("rock") && !secondEnemyHand.equals("rock")
 				|| myHand.equals("paper") && !firstEnemyHand.equals("scissors")
-						&& !secondEnemy2Hand.equals("scissors")) {
+						&& !secondEnemyHand.equals("scissors")) {
 			result = victoryMsg;
 		} else {
 			result = loseMsg;
@@ -55,21 +62,28 @@ public class JankenServlet extends HttpServlet {
 		return result;
 	}
 
+	//対戦結果取得
 	private static String getResult(int enemyCount, String myHand, ArrayList<String> enemyHands) {
 		String result;
+		//３人対戦時
 		if (enemyCount == 2) {
 			result = myHand != "" ? getResult(myHand, enemyHands.get(0), enemyHands.get(1)) : "";
+			//２人対戦時
 		} else {
 			result = myHand != "" ? getResult(myHand, enemyHands.get(0)) : "";
 		}
 		return result;
 	}
 
+	//コンピュータの選ぶ手をランダムで生成
 	private static ArrayList<String> createEnemyHand(int enemyCount, String myHand) {
-
+		//コンピュータの選ぶ手用List定義
 		ArrayList<String> createdEnemyHands = new ArrayList<String>();
+
+		//コンピュータの選ぶ手の選択肢の定義
 		String[] choicesEnemyhands = { "rock", "paper", "scissors" };
 
+		//プレイヤーが選択している場合
 		if (!myHand.equals("")) {
 			for (int i = 0; i < enemyCount; i++) {
 				Random rand = new Random();
@@ -77,12 +91,14 @@ public class JankenServlet extends HttpServlet {
 				String randomEnemyHand = choicesEnemyhands[num];
 				createdEnemyHands.add(randomEnemyHand);
 			}
+			//未選択の場合
 		} else {
-			createdEnemyHands.add(myHand);
+			createdEnemyHands.add("");
 		}
 		return createdEnemyHands;
 	}
 
+	//じゃんけん画像のpath
 	private static String createImagePath(String hand) {
 		String path = hand.equals("") ? "./images/janken-plate_emptyhand.jpg"
 				: "./images/janken-plate_" + hand + ".jpg";
@@ -91,13 +107,17 @@ public class JankenServlet extends HttpServlet {
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+		//対戦人数の取得
 		int enemyCount = request.getParameter("enemyCount") == null ? 1
 				: Integer.parseInt(request.getParameter("enemyCount"));
 
+		//プレイヤーの選ぶ手の取得
 		String myHand = request.getParameter("myHand") == null ? "" : request.getParameter("myHand");
 
+		//コンピュータの選ぶ手の取得
 		ArrayList<String> enemyHands = createEnemyHand(enemyCount, myHand);
 
+		//対戦結果の取得
 		String result = getResult(enemyCount, myHand, enemyHands);
 
 		if (!myHand.equals("") && enemyCount == 2) {
