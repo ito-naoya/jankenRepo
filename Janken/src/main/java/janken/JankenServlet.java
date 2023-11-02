@@ -77,6 +77,7 @@ public class JankenServlet extends HttpServlet {
 
 	//コンピュータの選ぶ手をランダムで生成
 	private static ArrayList<String> createEnemyHand(int enemyCount, String myHand) {
+
 		//コンピュータの選ぶ手用List定義
 		ArrayList<String> createdEnemyHands = new ArrayList<String>();
 
@@ -100,7 +101,7 @@ public class JankenServlet extends HttpServlet {
 
 	//じゃんけん画像のpath
 	private static String createImagePath(String hand) {
-		String imgPath = hand.equals("") ? "./images/janken-plate_emptyhand.jpg"
+		String imgPath = hand.equals("") ? ""
 				: "./images/janken-plate_" + hand + ".jpg";
 		return imgPath;
 	}
@@ -110,6 +111,7 @@ public class JankenServlet extends HttpServlet {
 		//対戦人数の取得
 		int enemyCount = request.getParameter("enemyCount") == null ? 1
 				: Integer.parseInt(request.getParameter("enemyCount"));
+		request.setAttribute("enemyCount", enemyCount);
 
 		//プレイヤーの選ぶ手の取得
 		String myHand = request.getParameter("myHand") == null ? "" : request.getParameter("myHand");
