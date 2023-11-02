@@ -11,8 +11,8 @@
 	<form method="post" action="janken" id="jankenForm">
 
 		<div id="enemyCountDiv">
-			<input type="checkbox" name="enemyCount" value="2" id="enemyCount">
-			<label for="enemyCount">CP2を追加</label>
+			<input type="checkbox" name="anotherEnemy" value="isSelected"
+				id="anotherEnemy"> <label for="anotherEnemy">CP2を追加</label>
 		</div>
 
 		<div id="rspDiv">
@@ -45,6 +45,7 @@
 	<%
 	if ((String) request.getAttribute("myHand") != "") {
 	%>
+
 	<div class="divFlex">
 		<p>プレイヤー:</p>
 		<img class="jankenImgSize" src="${myHand}">
@@ -56,23 +57,22 @@
 	</div>
 
 	<%
-	if ((Integer) request.getAttribute("enemyCount") == 2) {
+	if ((String) request.getAttribute("anotherEnemy") == "isSelected") {
 	%>
+
 	<div class="divFlex">
 		<p>コンピュータ２:</p>
 		<img class="jankenImgSize" src="${secondEnemyHand}">
 	</div>
+
 	<%
 	}
 	%>
+
 	<p>${result}</p>
+
 	<%
 	}
 	%>
-
-
-
-
-	<input type="hidden" value="${enemyCount}">
 </body>
 </html>

@@ -63,33 +63,35 @@ public class JankenServlet extends HttpServlet {
 	}
 
 	//対戦結果取得
-	private static String getResult(int enemyCount, String myHand, ArrayList<String> enemyHands) {
+	private static String getResult(String anotherEnemy, String myHand, ArrayList<String> enemyHands) {
 		String result = "";
 		//３人対戦時
-		if (enemyCount == 2) {
-			result = myHand != "" ? getResult(myHand, enemyHands.get(0), enemyHands.get(1)) : "";
+		if (anotherEnemy.equals("isSelected")) {
+			result = getResult(myHand, enemyHands.get(0), enemyHands.get(1));
 			//２人対戦時
-		} else if (enemyCount == 1) {
-			result = myHand != "" ? getResult(myHand, enemyHands.get(0)) : "";
+		} else if (!anotherEnemy.equals("isSelected")) {
+			result = getResult(myHand, enemyHands.get(0));
 		}
 		return result;
 	}
 
 	//コンピュータの選ぶ手をランダムで生成
-	private static ArrayList<String> createEnemyHand(int enemyCount, String myHand) {
+	private static ArrayList<String> createEnemyHand(String anotherEnemy, String myHand) {
+		//乱数の生成回数
+		int count = anotherEnemy.equals("isSelected") ? 2 : 1;
 
 		//コンピュータの選ぶ手用List定義
 		ArrayList<String> createdEnemyHands = new ArrayList<String>();
 
 		//コンピュータの選ぶ手の選択肢の定義
-		String[] choicesEnemyhands = { "rock", "paper", "scissors" };
+		String[] enemyOption = { "rock", "paper", "scissors" };
 
 		//プレイヤーが選択している場合
 		if (!myHand.equals("")) {
-			for (int i = 0; i < enemyCount; i++) {
+			for (int i = 0; i < count; i++) {
 				Random rand = new Random();
-				int num = rand.nextInt(choicesEnemyhands.length);
-				String randomEnemyHand = choicesEnemyhands[num];
+				int num = rand.nextInt(enemyOption.length);
+				String randomEnemyHand = enemyOption[num];
 				createdEnemyHands.add(randomEnemyHand);
 			}
 			//未選択の場合
@@ -107,36 +109,30 @@ public class JankenServlet extends HttpServlet {
 	}
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
 		//対戦人数の取得
-		int enemyCount = request.getParameter("enemyCount") == null ? 1
-				: Integer.parseInt(request.getParameter("enemyCount"));
-		request.setAttribute("enemyCount", enemyCount);
+		String anotherEnemy = request.getParameter("anotherEnemy") != null ? "isSelected" : "";
+		request.setAttribute("anotherEnemy", anotherEnemy);
 
 		//プレイヤーの選ぶ手の取得
 		String myHand = request.getParameter("myHand") == null ? "" : request.getParameter("myHand");
 
 		//コンピュータの選ぶ手の取得
-		ArrayList<String> enemyHands = createEnemyHand(enemyCount, myHand);
+		ArrayList<String> enemyHands = createEnemyHand(anotherEnemy, myHand);
 
 		//対戦結果の取得
-		String result = getResult(enemyCount, myHand, enemyHands);
+		String result = getResult(anotherEnemy, myHand, enemyHands);
 
-		if (!myHand.equals("") && enemyCount == 2) {
+		if (!myHand.equals("") && anotherEnemy.equals("isSelected")) {
 			request.setAttribute("myHand", createImagePath(myHand));
 			request.setAttribute("firstEnemyHand", createImagePath(enemyHands.get(0)));
 			request.setAttribute("secondEnemyHand", createImagePath(enemyHands.get(1)));
 			request.setAttribute("result", "結果 : " + result);
-		} else if (!myHand.equals("") && enemyCount == 1) {
+		} else if (!myHand.equals("") && !anotherEnemy.equals("isSelected")) {
 			request.setAttribute("myHand", createImagePath(myHand));
 			request.setAttribute("firstEnemyHand", createImagePath(enemyHands.get(0)));
-			request.setAttribute("secondEnemyHand", createImagePath(""));
 			request.setAttribute("result", "結果 : " + result);
 		} else if (myHand.equals("")) {
 			request.setAttribute("myHand", createImagePath(""));
-			request.setAttribute("firstEnemyHand", createImagePath(""));
-			request.setAttribute("secondEnemyHand", createImagePath(""));
-			request.setAttribute("result", "結果 : " + result);
 		}
 
 		String view = "/WEB-INF/views/janken.jsp";
