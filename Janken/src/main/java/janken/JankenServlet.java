@@ -20,7 +20,7 @@ public class JankenServlet extends HttpServlet {
 		// TODO Auto-generated constructor stub
 	}
 
-	//勝利メッセージ
+	//勝ちメッセージ
 	private static String victoryMsg = "🎉🎉🎉🎉🎉あなたの勝ちです!!!🎉🎉🎉🎉🎉";
 
 	//負けメッセージ
@@ -64,12 +64,12 @@ public class JankenServlet extends HttpServlet {
 
 	//対戦結果取得
 	private static String getResult(int enemyCount, String myHand, ArrayList<String> enemyHands) {
-		String result;
+		String result = "";
 		//３人対戦時
 		if (enemyCount == 2) {
 			result = myHand != "" ? getResult(myHand, enemyHands.get(0), enemyHands.get(1)) : "";
 			//２人対戦時
-		} else {
+		} else if (enemyCount == 1) {
 			result = myHand != "" ? getResult(myHand, enemyHands.get(0)) : "";
 		}
 		return result;
@@ -100,9 +100,9 @@ public class JankenServlet extends HttpServlet {
 
 	//じゃんけん画像のpath
 	private static String createImagePath(String hand) {
-		String path = hand.equals("") ? "./images/janken-plate_emptyhand.jpg"
+		String imgPath = hand.equals("") ? "./images/janken-plate_emptyhand.jpg"
 				: "./images/janken-plate_" + hand + ".jpg";
-		return path;
+		return imgPath;
 	}
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -124,17 +124,17 @@ public class JankenServlet extends HttpServlet {
 			request.setAttribute("myHand", createImagePath(myHand));
 			request.setAttribute("firstEnemyHand", createImagePath(enemyHands.get(0)));
 			request.setAttribute("secondEnemyHand", createImagePath(enemyHands.get(1)));
-			request.setAttribute("result", "result : " + result);
+			request.setAttribute("result", "結果 : " + result);
 		} else if (!myHand.equals("") && enemyCount == 1) {
 			request.setAttribute("myHand", createImagePath(myHand));
 			request.setAttribute("firstEnemyHand", createImagePath(enemyHands.get(0)));
 			request.setAttribute("secondEnemyHand", createImagePath(""));
-			request.setAttribute("result", "result : " + result);
+			request.setAttribute("result", "結果 : " + result);
 		} else if (myHand.equals("")) {
-			request.setAttribute("myHand", createImagePath(myHand));
+			request.setAttribute("myHand", createImagePath(""));
 			request.setAttribute("firstEnemyHand", createImagePath(""));
 			request.setAttribute("secondEnemyHand", createImagePath(""));
-			request.setAttribute("result", "result : " + result);
+			request.setAttribute("result", "結果 : " + result);
 		}
 
 		String view = "/WEB-INF/views/janken.jsp";
