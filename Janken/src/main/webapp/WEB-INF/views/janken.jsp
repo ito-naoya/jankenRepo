@@ -43,8 +43,7 @@
 	</form>
 
 	<%
-	String myHand = (String) request.getAttribute("myHand");
-	if (myHand != "") {
+	if ((String) request.getAttribute("myHand") != "") {
 	%>
 	<div class="divFlex">
 		<p>プレイヤー:</p>
@@ -57,8 +56,7 @@
 	</div>
 
 	<%
-	Integer enemyCount = (Integer) request.getAttribute("enemyCount");
-	if (enemyCount == 2) {
+	if ((Integer) request.getAttribute("enemyCount") == 2) {
 	%>
 	<div class="divFlex">
 		<p>コンピュータ２:</p>
