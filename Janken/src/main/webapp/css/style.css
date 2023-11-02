@@ -1,0 +1,30 @@
+@charset "UTF-8";
+
+.myHand{
+	width:50px;
+	height:50px;
+	}
+
+.jankenImgSize {
+	width: 60px;
+	height: 60px;
+}
+
+
+.divFlex{
+	display: flex;
+	align-items: center;
+}
+
+#rsp{
+	margin: 10px;
+}
+
+#enemyCountDiv{
+	margin: 10px;
+}
+
+#rspDiv{
+	
+display:flex;
+}
