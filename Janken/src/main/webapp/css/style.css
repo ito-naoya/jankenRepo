@@ -1,9 +1,9 @@
 @charset "UTF-8";
 
-.myHand{
-	width:50px;
-	height:50px;
-	}
+.myHand {
+	width: 50px;
+	height: 50px;
+}
 
 .jankenImgSize {
 	width: 60px;
@@ -11,20 +11,34 @@
 }
 
 
-.divFlex{
+.divFlex {
 	display: flex;
 	align-items: center;
 }
 
-#rsp{
+#rsp {
 	margin: 10px;
 }
 
-#enemyCountDiv{
+#enemyCountDiv {
 	margin: 10px;
 }
 
-#rspDiv{
-	
-display:flex;
+#rspDiv {
+
+	display: flex;
+}
+
+body {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-top: 50px;
+}
+
+#jankenForm {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 }
