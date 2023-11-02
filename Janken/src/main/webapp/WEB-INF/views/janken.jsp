@@ -42,6 +42,10 @@
 		<input type="submit" value="じゃんけん！ぽん！！" id="rsp">
 	</form>
 
+	<%
+	String myHand = (String) request.getAttribute("myHand");
+	if (myHand != "") {
+	%>
 	<div class="divFlex">
 		<p>プレイヤー:</p>
 		<img class="jankenImgSize" src="${myHand}">
@@ -52,11 +56,25 @@
 		<img class="jankenImgSize" src="${firstEnemyHand}">
 	</div>
 
+	<%
+	Integer enemyCount = (Integer) request.getAttribute("enemyCount");
+	if (enemyCount == 2) {
+	%>
 	<div class="divFlex">
 		<p>コンピュータ２:</p>
 		<img class="jankenImgSize" src="${secondEnemyHand}">
 	</div>
-
+	<%
+	}
+	%>
 	<p>${result}</p>
+	<%
+	}
+	%>
+
+
+
+
+	<input type="hidden" value="${enemyCount}">
 </body>
 </html>
