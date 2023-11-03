@@ -23,7 +23,6 @@
 				</label>
 			</div>
 
-
 			<div id="scissorsDiv">
 				<input type="radio" name="myHand" value="scissors" id="scissors">
 				<label for="scissors"> <img class="myHand"
