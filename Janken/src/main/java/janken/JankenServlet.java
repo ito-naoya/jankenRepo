@@ -77,8 +77,13 @@ public class JankenServlet extends HttpServlet {
 
 	//コンピュータの選ぶ手をランダムで生成
 	private static ArrayList<String> createEnemyHand(String anotherEnemy, String myHand) {
+		
+		//コンピュータの数
+		int singleEnemy = 1;
+		int multiEnemy = 2;
+		
 		//乱数の生成回数
-		int count = anotherEnemy.equals("isSelected") ? 2 : 1;
+		int count = anotherEnemy.equals("isSelected") ? multiEnemy : singleEnemy;
 
 		//コンピュータの選ぶ手用List定義
 		ArrayList<String> createdEnemyHands = new ArrayList<String>();
@@ -109,8 +114,9 @@ public class JankenServlet extends HttpServlet {
 	}
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
 		//対戦人数の取得
-		String anotherEnemy = request.getParameter("anotherEnemy") != null ? "isSelected" : "";
+		String anotherEnemy = request.getParameter("anotherEnemy") == null ? "" : "isSelected";
 		request.setAttribute("anotherEnemy", anotherEnemy);
 
 		//プレイヤーの選ぶ手の取得
