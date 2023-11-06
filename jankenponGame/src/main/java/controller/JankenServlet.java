@@ -77,23 +77,23 @@ public class JankenServlet extends HttpServlet {
 
 	//コンピュータの選ぶ手をランダムで生成
 	private static ArrayList<String> createEnemyHand(String anotherEnemy, String myHand) {
-		
-		//コンピュータの数
-		int singleEnemy = 1;
-		int multiEnemy = 2;
-		
-		//乱数の生成回数
-		int count = anotherEnemy.equals("isSelected") ? multiEnemy : singleEnemy;
 
 		//コンピュータの選ぶ手用List定義
 		ArrayList<String> createdEnemyHands = new ArrayList<String>();
 
 		//コンピュータの選ぶ手の選択肢の定義
 		String[] enemyOption = { "rock", "paper", "scissors" };
-
+		
+		//コンピュータの数
+		int singleEnemy = 1;
+		int multiEnemy = 2;
+		
+		//乱数の生成回数
+		int enemyCount = anotherEnemy.equals("isSelected") ? multiEnemy : singleEnemy;
+		
 		//プレイヤーが選択している場合
 		if (!myHand.equals("")) {
-			for (int i = 0; i < count; i++) {
+			for (int i = 0; i < enemyCount; i++) {
 				Random rand = new Random();
 				int num = rand.nextInt(enemyOption.length);
 				String randomEnemyHand = enemyOption[num];
